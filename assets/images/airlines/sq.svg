@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" width="160" height="50">
+  <rect width="160" height="50" rx="8" fill="#1b365d"/>
+  <path d="M16 28 L28 16 L38 22 L26 34 Z" fill="#e8a838"/>
+  <path d="M24 20 L36 14 L34 26 Z" fill="#ffffff"/>
+  <text x="46" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#ffffff">Singapore</text>
+  <text x="46" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#e8a838">Airlines</text>
+</svg>

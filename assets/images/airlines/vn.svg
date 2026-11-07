@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" width="160" height="50">
+  <rect width="160" height="50" rx="8" fill="#004c8f"/>
+  <circle cx="28" cy="25" r="14" fill="#d4af37"/>
+  <path d="M28 15 C32 20, 36 24, 28 35 C20 24, 24 20, 28 15 Z" fill="#004c8f"/>
+  <text x="50" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#ffffff">Vietnam</text>
+  <text x="50" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#d4af37">Airlines</text>
+</svg>

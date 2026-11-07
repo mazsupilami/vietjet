@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ee1d23" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#f58220" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#grad)"/>
+  <circle cx="480" cy="100" r="50" fill="#ffffff" opacity="0.25"/>
+  <path d="M0 320 L180 200 L320 280 L440 180 L600 320 L600 400 L0 400 Z" fill="#ffffff" opacity="0.2"/>
+  <path d="M0 350 L140 260 L280 340 L400 240 L600 360 L600 400 L0 400 Z" fill="#ffffff" opacity="0.3"/>
+  <g transform="translate(300, 180)" text-anchor="middle">
+    <path d="M-24 -10 L0 -30 L24 -10 L15 -10 L15 20 L-15 20 L-15 -10 Z" fill="#ffffff" opacity="0.9"/>
+    <text y="60" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="#ffffff">Vietjet Travel</text>
+    <text y="85" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" opacity="0.9">Hình ảnh minh họa tour</text>
+  </g>
+</svg>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vietjet Travel — Tìm chuyến bay & Tour du lịch</title>
+  <link rel="icon" type="image/jpeg" href="images/vietjet-logo.jpg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- sql.js WebAssembly UMD CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+</head>
+<body>
+
+  <!-- Demo Disclaimer Topbar -->
+  <div class="demo-topbar">
+    ⚠️ <strong>WEBSITE DEMO:</strong> Dự án học tập prototype, không phải website chính thức Vietjet Air. Giá vé và tour là dữ liệu mẫu.
+  </div>
+
+  <!-- Site Header / Navbar -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-link" title="Vietjet Travel Demo">
+          <img src="images/vietjet-logo.jpg" alt="Vietjet Logo" class="brand-logo-img">
+          <div>
+            <span class="brand-text">vietjet</span>
+            <span class="brand-subtext">TRAVEL PROTOTYPE</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active">Trang chủ</a></li>
+          <li><a href="flights.html" class="nav-link">Chuyến bay</a></li>
+          <li><a href="tours.html" class="nav-link">Tour du lịch</a></li>
+          <li>
+            <a href="cart.html" class="cart-btn-link" title="Xem giỏ hàng">
+              🛒 Giỏ hàng <span class="cart-badge">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="hamburger-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          ☰
+        </button>
+      </nav>
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav" id="mobile-nav-menu">
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="mobile-nav-link active">Trang chủ</a></li>
+        <li><a href="flights.html" class="mobile-nav-link">Chuyến bay</a></li>
+        <li><a href="tours.html" class="mobile-nav-link">Tour du lịch</a></li>
+        <li><a href="cart.html" class="mobile-nav-link">Giỏ hàng (<span class="cart-badge">0</span>)</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <h1>Bay đến nơi bạn muốn.<br><span class="highlight">Khám phá điều bạn yêu.</span></h1>
+            <p class="hero-subtitle">Tìm kiếm chuyến bay giá ưu đãi và tour du lịch trọn gói khắp Việt Nam và quốc tế.</p>
+
+            <!-- Search Form Card -->
+            <div class="search-card">
+              <form id="flight-search-form">
+                <div class="trip-type-tabs">
+                  <label class="radio-pill checked">
+                    <input type="radio" name="tripType" value="oneway" checked>
+                    <span>Một chiều</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="tripType" value="roundtrip">
+                    <span>Khứ hồi</span>
+                  </label>
+                  <label class="radio-pill">
+                    <input type="radio" name="tripType" value="multicity">
+                    <span>Nhiều thành phố</span>
+                  </label>
+                </div>
+
+                <div class="search-form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="search-origin">Điểm khởi hành</label>
+                    <select id="search-origin" class="form-control" required>
+                      <option value="SGN">TP. Hồ Chí Minh (SGN)</option>
+                      <option value="HAN">Hà Nội (HAN)</option>
+                      <option value="DAD">Đà Nẵng (DAD)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <label class="form-label" for="search-dest">Điểm đến</label>
+                      <button type="button" id="btn-swap-airports" style="font-size: 0.75rem; color: var(--primary); font-weight: 700;" title="Hoán đổi điểm đi/đến">⇄ Đổi chiều</button>
+                    </div>
+                    <select id="search-dest" class="form-control" required>
+                      <option value="HAN">Hà Nội (HAN)</option>
+                      <option value="SGN">TP. Hồ Chí Minh (SGN)</option>
+                      <option value="DAD">Đà Nẵng (DAD)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="search-departure">Ngày đi</label>
+                    <input type="date" id="search-departure" class="form-control" value="2026-12-15" required />
+                  </div>
+
+                  <div class="form-group" id="return-date-group" style="display: none;">
+                    <label class="form-label" for="search-return">Ngày về</label>
+                    <input type="date" id="search-return" class="form-control" value="2026-12-20" />
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                      🔍 Tìm chuyến bay
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Hero Image -->
+          <div class="hero-image-wrap">
+            <img 
+              src="images/vietjet-hero.jpg" 
+              alt="Vietjet flight attendants and aircraft" 
+              class="hero-image"
+              fetchpriority="high"
+            />
+            <div class="hero-badge-overlay">
+              <span style="color: var(--primary); font-size: 1.2rem;">★</span>
+              <span>Trải nghiệm bay hứng khởi • Dịch vụ thân thiện</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Airline Brands Section -->
+    <section class="section section-light">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Hãng hàng không đối tác</h2>
+            <p class="section-subtitle">Dễ dàng lựa chọn và so sánh chuyến bay từ các hãng hàng không hàng đầu</p>
+          </div>
+        </div>
+        <div class="airlines-grid" id="airlines-grid">
+          <!-- Render dynamically from SQLite -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Tours Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🏖️ Tour du lịch nổi bật</h2>
+            <p class="section-subtitle">Khám phá 8 hành trình tuyệt đẹp cùng Vietjet và các công ty lữ hành uy tín</p>
+          </div>
+          <a href="tours.html" class="view-all-link">Xem tất cả tour &rarr;</a>
+        </div>
+        <div class="tour-grid" id="featured-tours-grid">
+          <!-- Render dynamically from SQLite -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-link" style="margin-bottom: 12px;">
+            <img src="images/vietjet-logo.jpg" alt="Vietjet Logo" style="height: 36px; border-radius: 4px;">
+            <span class="brand-text" style="font-size: 1.3rem;">vietjet</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+            Website mẫu tìm kiếm và đặt chỗ chuyến bay & tour du lịch. Ứng dụng chạy thuần Frontend với cơ sở dữ liệu SQLite trong trình duyệt (WebAssembly).
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Dịch vụ</h5>
+          <ul class="footer-links">
+            <li><a href="flights.html">Vé máy bay nội địa</a></li>
+            <li><a href="flights.html">Vé máy bay quốc tế</a></li>
+            <li><a href="tours.html">Tour trọn gói</a></li>
+            <li><a href="cart.html">Quản lý giỏ hàng</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Hỗ trợ</h5>
+          <ul class="footer-links">
+            <li><a href="#">Hướng dẫn đặt vé</a></li>
+            <li><a href="#">Quy định hành lý</a></li>
+            <li><a href="#">Chính sách hoàn đổi</a></li>
+            <li><a href="#">Điều khoản sử dụng</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Liên hệ minh họa</h5>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 8px;">
+            📍 TP. Hồ Chí Minh, Việt Nam
+          </p>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 8px;">
+            ✉ Email demo: <strong>nvhai061993@gmail.com</strong>
+          </p>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">
+            📞 Hotline mẫu: 1900 1886
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Vietjet Travel Demo. Website mẫu phục vụ học tập; không phải hệ thống đặt vé chính thức.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/navigation.js"></script>
+  <script type="module" src="assets/js/home.js"></script>
+</body>
+</html>

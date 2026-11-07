@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết tour du lịch — Vietjet Travel</title>
+  <link rel="icon" type="image/jpeg" href="images/vietjet-logo.jpg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+</head>
+<body>
+
+  <div class="demo-topbar">
+    ⚠️ <strong>WEBSITE DEMO:</strong> Dự án học tập prototype, không phải website chính thức Vietjet Air. Giá vé và tour là dữ liệu mẫu.
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-link">
+          <img src="images/vietjet-logo.jpg" alt="Vietjet Logo" class="brand-logo-img">
+          <div>
+            <span class="brand-text">vietjet</span>
+            <span class="brand-subtext">TRAVEL PROTOTYPE</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+          <li><a href="flights.html" class="nav-link">Chuyến bay</a></li>
+          <li><a href="tours.html" class="nav-link active">Tour du lịch</a></li>
+          <li>
+            <a href="cart.html" class="cart-btn-link" title="Xem giỏ hàng">
+              🛒 Giỏ hàng <span class="cart-badge">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="hamburger-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          ☰
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-nav" id="mobile-nav-menu">
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="mobile-nav-link">Trang chủ</a></li>
+        <li><a href="flights.html" class="mobile-nav-link">Chuyến bay</a></li>
+        <li><a href="tours.html" class="mobile-nav-link active">Tour du lịch</a></li>
+        <li><a href="cart.html" class="mobile-nav-link">Giỏ hàng (<span class="cart-badge">0</span>)</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container detail-container">
+    <div id="tour-detail-container">
+      <div class="spinner"></div>
+      <p style="text-align: center; color: var(--text-muted);">Đang tải chi tiết tour và lịch trình...</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Vietjet Travel Demo. Dữ liệu tour du lịch giả lập phục vụ học tập.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/navigation.js"></script>
+  <script type="module" src="assets/js/tour-detail.js"></script>
+</body>
+</html>

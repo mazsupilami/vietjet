@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 50" width="160" height="50">
+  <rect width="160" height="50" rx="8" fill="#fecb00"/>
+  <polygon points="18,36 30,14 38,36" fill="#002d62"/>
+  <polygon points="26,36 34,20 40,36" fill="#ee1d23"/>
+  <text x="48" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#002d62">Vietravel</text>
+  <text x="48" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="11" fill="#002d62">Airlines</text>
+</svg>

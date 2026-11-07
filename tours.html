@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour du lịch trọn gói — Vietjet Travel</title>
+  <link rel="icon" type="image/jpeg" href="images/vietjet-logo.jpg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+</head>
+<body>
+
+  <div class="demo-topbar">
+    ⚠️ <strong>WEBSITE DEMO:</strong> Dự án học tập prototype, không phải website chính thức Vietjet Air. Giá vé và tour là dữ liệu mẫu.
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-link">
+          <img src="images/vietjet-logo.jpg" alt="Vietjet Logo" class="brand-logo-img">
+          <div>
+            <span class="brand-text">vietjet</span>
+            <span class="brand-subtext">TRAVEL PROTOTYPE</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+          <li><a href="flights.html" class="nav-link">Chuyến bay</a></li>
+          <li><a href="tours.html" class="nav-link active">Tour du lịch</a></li>
+          <li>
+            <a href="cart.html" class="cart-btn-link" title="Xem giỏ hàng">
+              🛒 Giỏ hàng <span class="cart-badge">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="hamburger-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          ☰
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-nav" id="mobile-nav-menu">
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="mobile-nav-link">Trang chủ</a></li>
+        <li><a href="flights.html" class="mobile-nav-link">Chuyến bay</a></li>
+        <li><a href="tours.html" class="mobile-nav-link active">Tour du lịch</a></li>
+        <li><a href="cart.html" class="mobile-nav-link">Giỏ hàng (<span class="cart-badge">0</span>)</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <div style="margin-top: 32px; margin-bottom: 24px;">
+      <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main);">Tour du lịch trọn gói chất lượng cao</h1>
+      <p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 4px;">Khám phá các điểm đến thiên đường cùng Vietjet và các công ty lữ hành hàng đầu Việt Nam.</p>
+    </div>
+
+    <!-- Mobile Open Filter Button -->
+    <div class="mobile-filter-bar">
+      <button id="btn-open-tour-filter" class="btn-open-filter">
+        ⚙ Bộ lọc tour & Sắp xếp
+      </button>
+    </div>
+
+    <!-- Page Layout: Sidebar + Grid -->
+    <div class="page-layout">
+      <aside class="filter-sidebar" id="tour-filter-sidebar">
+        <div class="filter-header">
+          <h3 class="filter-title">Bộ lọc tour</h3>
+          <button id="btn-clear-tour-filters" class="btn-clear-filters">Xóa bộ lọc</button>
+        </div>
+
+        <!-- Sort -->
+        <div class="filter-section">
+          <label class="filter-label" for="sort-tours">Sắp xếp theo giá</label>
+          <select id="sort-tours" class="sort-select" style="width: 100%;">
+            <option value="price_asc">Giá: Thấp đến Cao</option>
+            <option value="price_desc">Giá: Cao đến Thấp</option>
+            <option value="days_asc">Thời gian: Ngắn ngày trước</option>
+            <option value="days_desc">Thời gian: Dài ngày trước</option>
+          </select>
+        </div>
+
+        <!-- Airline in tour -->
+        <div class="filter-section">
+          <label class="filter-label">Hãng hàng không bay kèm</label>
+          <div class="filter-checkbox-list" id="tour-filter-airlines">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Departure time slots -->
+        <div class="filter-section">
+          <label class="filter-label">Khung giờ khởi hành</label>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-tour-timeslot" value="" checked>
+              <span>Mọi khung giờ</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-tour-timeslot" value="early">
+              <span>Sáng sớm (00:00 - 05:59)</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-tour-timeslot" value="morning">
+              <span>Buổi sáng (06:00 - 11:59)</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-tour-timeslot" value="afternoon">
+              <span>Buổi chiều (12:00 - 17:59)</span>
+            </label>
+          </div>
+        </div>
+
+        <button id="btn-close-tour-drawer" class="btn-primary" style="width: 100%; margin-top: 16px; display: none;">
+          Đóng bộ lọc
+        </button>
+      </aside>
+
+      <!-- Results Grid -->
+      <section class="results-column">
+        <div class="results-header">
+          <div class="results-count">
+            Tìm thấy <span id="tour-count-number">0</span> tour du lịch
+          </div>
+        </div>
+
+        <div class="tour-grid" id="tour-results-grid">
+          <div class="spinner" style="grid-column: 1 / -1;"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Vietjet Travel Demo. Dữ liệu tour du lịch giả lập phục vụ học tập.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/navigation.js"></script>
+  <script type="module" src="assets/js/tours.js"></script>
+</body>
+</html>

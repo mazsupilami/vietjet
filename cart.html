@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giỏ hàng & Đăng ký dịch vụ — Vietjet Travel</title>
+  <link rel="icon" type="image/jpeg" href="images/vietjet-logo.jpg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Optional EmailJS SDK (loaded via CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body>
+
+  <div class="demo-topbar">
+    ⚠️ <strong>WEBSITE DEMO:</strong> Dự án học tập prototype, không phải website chính thức Vietjet Air. Giá vé và tour là dữ liệu mẫu.
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-link">
+          <img src="images/vietjet-logo.jpg" alt="Vietjet Logo" class="brand-logo-img">
+          <div>
+            <span class="brand-text">vietjet</span>
+            <span class="brand-subtext">TRAVEL PROTOTYPE</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+          <li><a href="flights.html" class="nav-link">Chuyến bay</a></li>
+          <li><a href="tours.html" class="nav-link">Tour du lịch</a></li>
+          <li>
+            <a href="cart.html" class="cart-btn-link" title="Xem giỏ hàng">
+              🛒 Giỏ hàng <span class="cart-badge">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="hamburger-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          ☰
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-nav" id="mobile-nav-menu">
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="mobile-nav-link">Trang chủ</a></li>
+        <li><a href="flights.html" class="mobile-nav-link">Chuyến bay</a></li>
+        <li><a href="tours.html" class="mobile-nav-link">Tour du lịch</a></li>
+        <li><a href="cart.html" class="mobile-nav-link">Giỏ hàng (<span class="cart-badge">0</span>)</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 32px; padding-bottom: 64px;">
+    <h1 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 8px;">Giỏ hàng của bạn</h1>
+    <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 28px;">Kiểm tra danh sách chuyến bay & tour đã chọn trước khi gửi yêu cầu đăng ký.</p>
+
+    <!-- Empty State -->
+    <div id="cart-empty-state" class="empty-state" style="display: none;">
+      <div class="empty-state-icon">🛒</div>
+      <h2>Giỏ hàng hiện đang trống</h2>
+      <p style="margin: 12px 0 24px 0;">Bạn chưa thêm chuyến bay hoặc tour du lịch nào vào giỏ.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="flights.html" class="btn-primary">Tìm chuyến bay</a>
+        <a href="tours.html" class="btn-secondary">Khám phá tour</a>
+      </div>
+    </div>
+
+    <!-- Main Layout: Cart Items + Checkout Form -->
+    <div class="cart-layout" id="cart-main-layout">
+      
+      <!-- Left Column: Items list & Registration form -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 1.15rem; font-weight: 700;">Danh sách mục đã chọn</h3>
+          <button id="btn-clear-all-cart" class="btn-outline-danger" style="font-size: 0.82rem;">
+            🗑 Xóa toàn bộ giỏ
+          </button>
+        </div>
+
+        <div id="cart-items-container">
+          <!-- Dynamically populated by checkout.js -->
+        </div>
+
+        <!-- Customer Information Form -->
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; margin-top: 32px; box-shadow: var(--shadow-sm);">
+          <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px;">Thông tin người đăng ký</h2>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 24px;">
+            Vui lòng điền thông tin để hoàn tất yêu cầu tiếp nhận demo:
+          </p>
+
+          <form id="customer-checkout-form">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px;">
+              <div class="form-group">
+                <label class="form-label" for="cust-name">Họ và tên *</label>
+                <input type="text" id="cust-name" class="form-control" placeholder="Nguyễn Văn A" required />
+                <span id="cust-name-error" style="color: var(--danger); font-size: 0.78rem; display: none; margin-top: 4px;"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="cust-phone">Số điện thoại *</label>
+                <input type="tel" id="cust-phone" class="form-control" placeholder="0912345678" required />
+                <span id="cust-phone-error" style="color: var(--danger); font-size: 0.78rem; display: none; margin-top: 4px;"></span>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+              <label class="form-label" for="cust-email">Địa chỉ Email *</label>
+              <input type="email" id="cust-email" class="form-control" placeholder="name@example.com" required />
+              <span id="cust-email-error" style="color: var(--danger); font-size: 0.78rem; display: none; margin-top: 4px;"></span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label class="form-label" for="cust-notes">Ghi chú thêm (không bắt buộc)</label>
+              <textarea id="cust-notes" class="form-control" style="height: 80px; padding: 10px 14px; resize: vertical;" placeholder="Yêu cầu chỗ ngồi, suất ăn đặc biệt hoặc câu hỏi thêm..."></textarea>
+            </div>
+
+            <div style="background: #fff8e6; border: 1px solid #ffe599; border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px; font-size: 0.88rem; color: #925400;">
+              ⚠️ <strong>LƯU Ý:</strong> Đây là yêu cầu đăng ký <strong>demo học tập</strong>, chưa phải vé máy bay hoặc tour đã được xác nhận xuất vé thật.
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label class="filter-checkbox-item" style="align-items: flex-start;">
+                <input type="checkbox" id="cust-consent" style="margin-top: 3px;" required />
+                <span style="font-size: 0.88rem; line-height: 1.4;">
+                  Tôi đồng ý xử lý thông tin cá nhân cho mục đích tiếp nhận yêu cầu demo này theo chính sách bảo mật.
+                </span>
+              </label>
+              <span id="cust-consent-error" style="color: var(--danger); font-size: 0.78rem; display: none; margin-top: 4px;"></span>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; height: 52px; font-size: 1.1rem;">
+              ✓ Xác nhận yêu cầu đặt chỗ
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Column: Checkout Summary (Sticky) -->
+      <div>
+        <div class="checkout-card">
+          <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            Tóm tắt đơn hàng
+          </h3>
+
+          <div class="checkout-summary-row">
+            <span style="color: var(--text-secondary);">Tạm tính chi phí:</span>
+            <span id="cart-summary-total" style="font-weight: 700;">0 ₫</span>
+          </div>
+
+          <div class="checkout-summary-row">
+            <span style="color: var(--text-secondary);">Thuế & Phí dịch vụ:</span>
+            <span style="font-weight: 700; color: var(--success);">Đã bao gồm trong giá mẫu</span>
+          </div>
+
+          <div class="checkout-total-row">
+            <span>Tổng cộng:</span>
+            <span class="checkout-total-price" id="cart-summary-grand-total">0 ₫</span>
+          </div>
+
+          <div style="margin-top: 20px; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+            🔒 Dữ liệu giỏ hàng được lưu trữ an toàn trong trình duyệt (localStorage). Không lưu thông tin thẻ ngân hàng hoặc dữ liệu mật khẩu.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Vietjet Travel Demo. Dữ liệu giả lập phục vụ học tập.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/navigation.js"></script>
+  <script type="module" src="assets/js/checkout.js"></script>
+</body>
+</html>

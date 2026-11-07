@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tìm kiếm chuyến bay — Vietjet Travel</title>
+  <link rel="icon" type="image/jpeg" href="images/vietjet-logo.jpg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+</head>
+<body>
+
+  <div class="demo-topbar">
+    ⚠️ <strong>WEBSITE DEMO:</strong> Dự án học tập prototype, không phải website chính thức Vietjet Air. Giá vé và tour là dữ liệu mẫu.
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-link">
+          <img src="images/vietjet-logo.jpg" alt="Vietjet Logo" class="brand-logo-img">
+          <div>
+            <span class="brand-text">vietjet</span>
+            <span class="brand-subtext">TRAVEL PROTOTYPE</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+          <li><a href="flights.html" class="nav-link active">Chuyến bay</a></li>
+          <li><a href="tours.html" class="nav-link">Tour du lịch</a></li>
+          <li>
+            <a href="cart.html" class="cart-btn-link" title="Xem giỏ hàng">
+              🛒 Giỏ hàng <span class="cart-badge">0</span>
+            </a>
+          </li>
+        </ul>
+
+        <button class="hamburger-btn" aria-label="Mở menu điều hướng" aria-expanded="false">
+          ☰
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-nav" id="mobile-nav-menu">
+      <ul class="mobile-nav-links">
+        <li><a href="index.html" class="mobile-nav-link">Trang chủ</a></li>
+        <li><a href="flights.html" class="mobile-nav-link active">Chuyến bay</a></li>
+        <li><a href="tours.html" class="mobile-nav-link">Tour du lịch</a></li>
+        <li><a href="cart.html" class="mobile-nav-link">Giỏ hàng (<span class="cart-badge">0</span>)</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Search Summary Card -->
+    <div class="detail-header-card" style="margin-top: 24px; margin-bottom: 20px; padding: 20px;" id="search-summary-box">
+      <!-- Injected by flights.js -->
+    </div>
+
+    <!-- Collapsible Edit Search Panel -->
+    <div id="flight-edit-panel" style="display: none; background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Chỉnh sửa thông tin tìm kiếm</h3>
+      <form id="flight-edit-form">
+        <div class="search-form-grid">
+          <div class="form-group">
+            <label class="form-label" for="edit-origin">Điểm đi</label>
+            <select id="edit-origin" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-dest">Điểm đến</label>
+            <select id="edit-dest" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-departure">Ngày khởi hành</label>
+            <input type="date" id="edit-departure" class="form-control" value="2026-12-15" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-trip-type">Hành trình</label>
+            <select id="edit-trip-type" class="form-control">
+              <option value="oneway">Một chiều</option>
+              <option value="roundtrip">Khứ hồi</option>
+              <option value="multicity">Nhiều thành phố</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn-primary" style="width: 100%;">Cập nhật</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Mobile Open Filter Button -->
+    <div class="mobile-filter-bar">
+      <button id="btn-open-mobile-filter" class="btn-open-filter">
+        ⚙ Bộ lọc chuyến bay & Sắp xếp
+      </button>
+    </div>
+
+    <!-- Page Layout: Sidebar Filters + Results -->
+    <div class="page-layout">
+      <!-- Filter Sidebar -->
+      <aside class="filter-sidebar" id="flight-filter-sidebar">
+        <div class="filter-header">
+          <h3 class="filter-title">Bộ lọc tìm kiếm</h3>
+          <button id="btn-clear-all-filters" class="btn-clear-filters">Xóa bộ lọc</button>
+        </div>
+
+        <!-- Sort by -->
+        <div class="filter-section">
+          <label class="filter-label" for="sort-flights">Sắp xếp theo giá</label>
+          <select id="sort-flights" class="sort-select" style="width: 100%;">
+            <option value="price_asc">Giá: Thấp đến Cao</option>
+            <option value="price_desc">Giá: Cao đến Thấp</option>
+            <option value="departure_asc">Giờ cất cánh sớm nhất</option>
+            <option value="duration_asc">Thời lượng bay ngắn nhất</option>
+          </select>
+        </div>
+
+        <!-- Direct Flight -->
+        <div class="filter-section">
+          <label class="filter-label">Số điểm dừng</label>
+          <label class="filter-checkbox-item">
+            <input type="checkbox" id="filter-direct-only">
+            <span>Chỉ chuyến bay thẳng (0 dừng)</span>
+          </label>
+        </div>
+
+        <!-- Airlines -->
+        <div class="filter-section">
+          <label class="filter-label">Hãng hàng không</label>
+          <div class="filter-checkbox-list" id="filter-airlines-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Cabin Class -->
+        <div class="filter-section">
+          <label class="filter-label">Hạng dịch vụ vé</label>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-cabin" value="" checked>
+              <span>Tất cả các hạng</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-cabin" value="economy">
+              <span>Phổ thông (Economy)</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-cabin" value="business">
+              <span>Thương gia (Business)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Departure Time Slots -->
+        <div class="filter-section">
+          <label class="filter-label">Khung giờ cất cánh</label>
+          <div class="filter-checkbox-list">
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-tour-timeslot" value="" checked>
+              <span>Mọi khung giờ</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-timeslot" value="early">
+              <span>Sáng sớm (00:00 - 05:59)</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-timeslot" value="morning">
+              <span>Buổi sáng (06:00 - 11:59)</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-timeslot" value="afternoon">
+              <span>Buổi chiều (12:00 - 17:59)</span>
+            </label>
+            <label class="filter-checkbox-item">
+              <input type="radio" name="filter-timeslot" value="evening">
+              <span>Buổi tối (18:00 - 23:59)</span>
+            </label>
+          </div>
+        </div>
+
+        <button id="btn-close-filter-drawer" class="btn-primary" style="width: 100%; margin-top: 16px; display: none;">
+          Đóng bộ lọc
+        </button>
+      </aside>
+
+      <!-- Results Column -->
+      <section class="results-column">
+        <div class="results-header">
+          <div class="results-count">
+            Tìm thấy <span id="flight-count-number">0</span> chuyến bay khả dụng
+          </div>
+        </div>
+
+        <div id="flight-results-container">
+          <div class="spinner"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 Vietjet Travel Demo. Dữ liệu chuyến bay giả lập phục vụ học tập.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/navigation.js"></script>
+  <script type="module" src="assets/js/flights.js"></script>
+</body>
+</html>
